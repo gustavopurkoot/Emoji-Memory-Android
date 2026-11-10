@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.emojimemory.ui.RoxoPrincipal
 
 data class ItemAba(
     val rota: String,
@@ -35,7 +34,6 @@ fun BottomNavBar(navController: NavHostController, isAdmin: Boolean) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val rotaAtual = backStackEntry?.destination?.route
 
-    // bifurcação de perfil: a aba Admin só existe para o administrador
     val abasVisiveis = abas.filter { !it.somenteAdmin || isAdmin }
 
     NavigationBar {
