@@ -1,4 +1,4 @@
-package com.example.Emoji-Memory-Android.ui
+package com.example.emoji_memory_android.ui
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
