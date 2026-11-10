@@ -1,4 +1,4 @@
-package com.example.Emoji-Memory-Android.ui
+package com.example.emoji-memory-android.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
