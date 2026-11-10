@@ -1,4 +1,4 @@
-package com.example.emojimemory.ui
+package com.example.Emoji-Memory-Android.ui
 
 import androidx.compose.ui.graphics.Color
 
