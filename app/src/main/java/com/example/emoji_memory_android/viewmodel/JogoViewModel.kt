@@ -1,13 +1,13 @@
-package com.example.emojimemory.viewmodel
+package com.example.emoji-memory-android.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.emojimemory.data.local.Categoria
-import com.example.emojimemory.data.local.Partida
-import com.example.emojimemory.data.local.Usuario
-import com.example.emojimemory.data.repository.CategoriaRepository
-import com.example.emojimemory.data.repository.PartidaRepository
-import com.example.emojimemory.data.repository.UsuarioRepository
+import com.example.emoji-memory-android.data.local.Categoria
+import com.example.emoji-memory-android.data.local.Partida
+import com.example.emoji-memory-android.data.local.Usuario
+import com.example.emoji-memory-android.data.repository.CategoriaRepository
+import com.example.emoji-memory-android.data.repository.PartidaRepository
+import com.example.emoji-memory-android.data.repository.UsuarioRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,15 +15,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// O tabuleiro é sempre 4x4: 8 pares = 16 cartas
 private const val PARES = 8
 
-// Emojis usados só se o banco ainda não tiver nenhuma categoria pronta
 private val EMOJIS_PADRAO = listOf(
     "🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐸"
 )
 
-// Uma carta do tabuleiro
 data class Carta(
     val id: Int,
     val emoji: String,
@@ -31,9 +28,8 @@ data class Carta(
     val encontrada: Boolean = false
 )
 
-// Tudo que as telas de login, cadastro, menu, jogo e perfil precisam para se desenhar
 data class JogoUiState(
-    // login (perfil Jogador x Admin)
+    // tela-login
     val logado: Boolean = false,
     val usuarioId: Int = 0,
     val jogador: String = "",
@@ -43,25 +39,25 @@ data class JogoUiState(
     val erroPerfil: String? = null,
     val mensagemLogin: String? = null,
 
-    // criação de conta
+    // tela-novas-contas
     val erroCadastro: String? = null,
     val contaCriada: Boolean = false,
 
-    // dados que vêm do Room (via Flow)
-    val partidas: List<Partida> = emptyList(),      // já ordenadas da maior pontuação para a menor
+    // dados-room
+    val partidas: List<Partida> = emptyList(),
     val categorias: List<Categoria> = emptyList(),
     val avisoCategorias: String? = null,
 
-    // partida em andamento
+    // logica-jogo-andando
     val categoriaAtual: String = "",
     val cartas: List<Carta> = emptyList(),
     val tentativas: Int = 0,
     val pontuacao: Int = 0,
-    val bloqueado: Boolean = false,                  // true enquanto o par errado está na tela
+    val bloqueado: Boolean = false,
     val terminou: Boolean = false,
     val mensagem: String? = null
 ) {
-    // valores calculados a partir das partidas (usam filter / sumOf)
+    // lista-partidas
     val minhasPartidas: List<Partida>
         get() = partidas.filter { it.usuarioId == usuarioId }
 
@@ -83,7 +79,6 @@ class JogoViewModel(
     val uiState: StateFlow<JogoUiState> = _uiState.asStateFlow()
 
     init {
-        // se inscreve uma vez em cada Flow: as listas atualizam sozinhas a cada insert/update
         viewModelScope.launch {
             partidaRepository.buscarTodos().collect { lista ->
                 _uiState.update { estado ->
@@ -96,7 +91,7 @@ class JogoViewModel(
                 _uiState.update { it.copy(categorias = lista) }
             }
         }
-        // prepara os dados iniciais: administrador, categorias do app e categorias da API
+       
         viewModelScope.launch {
             val erroAdmin = usuarioRepository.garantirAdmin()
             val erroBanco = categoriaRepository.prepararCategorias()
@@ -108,7 +103,7 @@ class JogoViewModel(
         }
     }
 
-    // ---------- login e criação de conta (usuários salvos no Room) ----------
+    // login-e-novas-contas
 
     fun entrar(usuario: String, senha: String) {
         val nome = usuario.trim()
@@ -127,7 +122,6 @@ class JogoViewModel(
                     it.copy(erroLogin = "Usuário ou senha incorretos.", mensagemLogin = null)
                 }
             } else {
-                // bifurcação de perfil: o campo "admin" do usuário define o que ele pode ver
                 _uiState.update {
                     it.copy(
                         logado = true,
@@ -181,7 +175,6 @@ class JogoViewModel(
         }
     }
 
-    // a tela de cadastro chama isto depois de voltar para o login
     fun consumirContaCriada() {
         _uiState.update { it.copy(contaCriada = false) }
     }
@@ -190,7 +183,7 @@ class JogoViewModel(
         _uiState.update { it.copy(erroLogin = null, erroCadastro = null, erroPerfil = null) }
     }
 
-    // O jogador logado edita o próprio nome, e-mail e (opcionalmente) a senha
+    // edição-de-perfil
     fun editarPerfil(nome: String, email: String, novaSenha: String, aoSalvar: () -> Unit) {
         val nomeLimpo = nome.trim()
         val emailLimpo = email.trim()
@@ -241,7 +234,7 @@ class JogoViewModel(
         }
     }
 
-    // ---------- lógica do jogo ----------
+    // logica-do-mini-jogo
 
     private fun listaDeEmojis(categoria: Categoria): List<String> {
         return categoria.emojis.split(" ").filter { it.isNotBlank() }.distinct()
@@ -250,7 +243,7 @@ class JogoViewModel(
     fun iniciarJogo() {
         val estado = _uiState.value
 
-        // sorteia automaticamente uma categoria que tenha emojis suficientes para 8 pares
+        // randomização-do-jogo
         val sorteada = estado.categorias
             .filter { listaDeEmojis(it).size >= PARES }
             .randomOrNull()
@@ -259,7 +252,7 @@ class JogoViewModel(
         val nomeCategoria = sorteada?.nome ?: "Padrão"
 
         val escolhidos = lista.shuffled().take(PARES)
-        // cada emoji aparece duas vezes e o baralho é embaralhado
+        
         val baralho = (escolhidos + escolhidos)
             .shuffled()
             .mapIndexed { indice, emoji -> Carta(id = indice, emoji = emoji) }
@@ -293,7 +286,7 @@ class JogoViewModel(
             return
         }
 
-        // segunda carta: conta a tentativa, trava o tabuleiro e confere o par depois de um instante
+        // checagem-cartas
         _uiState.update {
             it.copy(cartas = cartas, tentativas = it.tentativas + 1, bloqueado = true)
         }
@@ -316,7 +309,7 @@ class JogoViewModel(
             }
         }
 
-        // acertou: +100 pontos / errou: -10 (nunca abaixo de zero)
+        // pontos
         val pontos = if (acertou) estado.pontuacao + 100 else maxOf(0, estado.pontuacao - 10)
         val terminou = cartas.all { it.encontrada }
 
@@ -327,7 +320,7 @@ class JogoViewModel(
         if (terminou) salvarPartida()
     }
 
-    // toda partida terminada é salva (o jogo só tem o modo Rank)
+    // salvamento-das-partidas
     private fun salvarPartida() {
         val estado = _uiState.value
         viewModelScope.launch {
