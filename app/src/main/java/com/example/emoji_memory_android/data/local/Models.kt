@@ -1,4 +1,4 @@
-package com.example.Emoji-Memory-Android.data.local
+package com.example.emoji_memory_android.data.local
 
 import androidx.room3.Entity
 import androidx.room3.PrimaryKey
