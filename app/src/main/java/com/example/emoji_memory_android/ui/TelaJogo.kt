@@ -1,4 +1,4 @@
-package com.example.emojimemory.ui
+package com.example.emoji-memory-android.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,14 +30,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.emojimemory.viewmodel.Carta
-import com.example.emojimemory.viewmodel.JogoViewModel
+import com.example.emoji-memory-android.viewmodel.Carta
+import com.example.emoji-memory-android.viewmodel.JogoViewModel
 
 @Composable
 fun TelaJogo(navController: NavController, jogoVm: JogoViewModel) {
     val estado = jogoVm.uiState.collectAsState().value
 
-    // quando o ViewModel avisa que todos os pares foram achados, abre a tela de resultado
     LaunchedEffect(estado.terminou) {
         if (estado.terminou) {
             navController.navigate(Rotas.RESULTADO) {
@@ -80,7 +79,7 @@ fun TelaJogo(navController: NavController, jogoVm: JogoViewModel) {
             modifier = Modifier.padding(horizontal = 20.dp)
         )
 
-        // tabuleiro: grade de 4 colunas
+        // tabuleiro
         LazyVerticalGrid(
             columns = GridCells.Fixed(4),
             modifier = Modifier
