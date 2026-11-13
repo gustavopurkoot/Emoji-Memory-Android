@@ -1,4 +1,4 @@
-package com.example.emojimemory.ui
+package com.example.emoji-memory-android.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.emojimemory.viewmodel.JogoViewModel
+import com.example.emoji-memory-android.viewmodel.JogoViewModel
 
 @Composable
 fun TelaResultado(navController: NavController, jogoVm: JogoViewModel) {
