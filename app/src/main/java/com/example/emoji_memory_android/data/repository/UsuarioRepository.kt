@@ -1,32 +1,83 @@
 package com.example.emoji_memory_android.data.repository
-import androidx.room3.Dao
-import androidx.room3.Delete
-import androidx.room3.Insert
-import androidx.room3.Query
-import androidx.room3.Update
+
+import com.example.emoji_memory_android.data.local.Usuario
+import com.example.emoji_memory_android.data.local.UsuarioDAO
 import kotlinx.coroutines.flow.Flow
 
-@Dao
-interface UsuarioDAO {
+data class ResultadoLogin(
+    val usuario: Usuario? = null,
+    val erro: String? = null
+)
 
-    @Insert
-    suspend fun inserir(usuario: Usuario)
+class UsuarioRep5ository(private val dao: UsuarioDAO) {
 
-    @Query("SELECT * FROM usuarios")
-    fun buscarTodos(): Flow<List<Usuario>>
+    fun buscarTodos(): Flow<List<Usuario>> = dao.buscarTodos()
 
-    @Query("SELECT * FROM usuarios WHERE nome = :nome LIMIT 1")
-    suspend fun buscarPorNome(nome: String): Usuario?
+    suspend fun login(nome: String, senha: String): ResultadoLogin {
+        return try {
+            ResultadoLogin(usuario = dao.buscarLogin(nome, senha))
+        } catch (e: Exception) {
+            ResultadoLogin(erro = "Erro ao acessar o banco de dados.")
+        }
+    }
 
-    @Query("SELECT * FROM usuarios WHERE id = :id LIMIT 1")
-    suspend fun buscarPorId(id: Int): Usuario?
+    suspend fun inserir(usuario: Usuario): String? {
+        return try {
+            if (dao.buscarPorNome(usuario.nome) != null) {
+                "Esse nome de usuário já existe."
+            } else {
+                dao.inserir(usuario)
+                null
+            }
+        } catch (e: Exception) {
+            "Não foi possível criar a conta."
+        }
+    }
 
-    @Query("SELECT * FROM usuarios WHERE nome = :nome AND senha = :senha LIMIT 1")
-    suspend fun buscarLogin(nome: String, senha: String): Usuario?
+    suspend fun atualizar(usuario: Usuario): String? {
+        return try {
+            val existente = dao.buscarPorNome(usuario.nome)
+            if (existente != null && existente.id != usuario.id) {
+                "Esse nome de usuário já está em uso."
+            } else {
+                dao.atualizar(usuario)
+                null
+            }
+        } catch (e: Exception) {
+            "Não foi possível atualizar o usuário."
+        }
+    }
 
-    @Update
-    suspend fun atualizar(usuario: Usuario)
+    suspend fun atualizarPerfil(id: Int, nome: String, email: String, novaSenha: String): String? {
+        return try {
+            val atual = dao.buscarPorId(id)
+            if (atual == null) {
+                "Usuário não encontrado."
+            } else {
+                atualizar(
+                    atual.copy(
+                        nome = nome,
+                        email = email,
+                        senha = if (novaSenha.isBlank()) atual.senha else novaSenha
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            "Não foi possível atualizar o perfil."
+        }
+    }
 
-    @Delete
-    suspend fun deletar(usuario: Usuario)
+    suspend fun garantirAdmin(): String? {
+        return try {
+            if (dao.buscarPorNome("admin") == null) {
+                dao.inserir(
+                    Usuario(nome = "admin", email = "admin@email.com", senha = "admin", admin = true)
+                )
+            }
+            null
+        } catch (e: Exception) {
+            "Não foi possível preparar o administrador."
+        }
+    }
 }
+
