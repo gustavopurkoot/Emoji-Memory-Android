@@ -15,14 +15,12 @@ interface UsuarioDAO {
     @Query("SELECT * FROM usuarios")
     fun buscarTodos(): Flow<List<Usuario>>
 
-    // devolve null quando não existe usuário com esse nome
     @Query("SELECT * FROM usuarios WHERE nome = :nome LIMIT 1")
     suspend fun buscarPorNome(nome: String): Usuario?
 
     @Query("SELECT * FROM usuarios WHERE id = :id LIMIT 1")
     suspend fun buscarPorId(id: Int): Usuario?
 
-    // devolve null quando nome ou senha estão errados
     @Query("SELECT * FROM usuarios WHERE nome = :nome AND senha = :senha LIMIT 1")
     suspend fun buscarLogin(nome: String, senha: String): Usuario?
 
