@@ -67,7 +67,7 @@ fun TelaResultado(navController: NavController, jogoVm: JogoViewModel) {
 
         BotaoRoxo(texto = "JOGAR NOVAMENTE") {
             jogoVm.iniciarJogo()
-            // abre um jogo novo e remove o resultado da pilha (o Início continua embaixo)
+            
             navController.navigate(Rotas.JOGO) {
                 popUpTo(Rotas.INICIO)
             }
