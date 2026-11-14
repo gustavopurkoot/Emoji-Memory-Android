@@ -39,13 +39,11 @@ import com.example.emoji_memory_android.viewmodel.AdminViewModel
 fun TelaAdmin(adminVm: AdminViewModel, isAdmin: Boolean) {
     val estado = adminVm.uiState.collectAsState().value
 
-    // usuário que está sendo editado no momento (null = diálogo fechado)
     var usuarioEditando by remember { mutableStateOf<Usuario?>(null) }
     var nome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var novaSenha by remember { mutableStateOf("") }
 
-    // bifurcação de perfil: jogador comum não vê o painel nem consegue editar usuários
     if (!isAdmin) {
         Box(
             modifier = Modifier
@@ -71,14 +69,12 @@ fun TelaAdmin(adminVm: AdminViewModel, isAdmin: Boolean) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // mensagem de sucesso ou erro vinda do ViewModel
             if (estado.mensagem != null) {
                 item {
                     Text(text = estado.mensagem, color = RoxoPrincipal, fontWeight = FontWeight.Bold)
                 }
             }
 
-            // ---------- seção 1: últimas partidas ----------
             item {
                 Text(
                     text = "Últimas Partidas",
@@ -105,7 +101,6 @@ fun TelaAdmin(adminVm: AdminViewModel, isAdmin: Boolean) {
                 }
             }
 
-            // ---------- seção 2: gestão de usuários ----------
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -129,7 +124,6 @@ fun TelaAdmin(adminVm: AdminViewModel, isAdmin: Boolean) {
                         }
                         IconButton(
                             onClick = {
-                                // abre o diálogo já preenchido com os dados atuais
                                 adminVm.limparMensagem()
                                 nome = usuario.nome
                                 email = usuario.email
@@ -151,7 +145,6 @@ fun TelaAdmin(adminVm: AdminViewModel, isAdmin: Boolean) {
         }
     }
 
-    // diálogo de edição de usuário (só chega aqui se for admin)
     val editando = usuarioEditando
     if (editando != null) {
         AlertDialog(
@@ -192,7 +185,6 @@ fun TelaAdmin(adminVm: AdminViewModel, isAdmin: Boolean) {
             confirmButton = {
                 TextButton(
                     onClick = {
-                        // o diálogo só fecha se o ViewModel conseguir salvar
                         adminVm.salvarUsuario(editando, nome, email, novaSenha) {
                             usuarioEditando = null
                         }
