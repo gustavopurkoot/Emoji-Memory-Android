@@ -1,4 +1,4 @@
-package com.example.emojimemory.ui
+package com.example.emoji_memory_android.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,8 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.emojimemory.data.local.Usuario
-import com.example.emojimemory.viewmodel.AdminViewModel
+import com.example.emoji_memory_android.data.local.Usuario
+import com.example.emoji_memory_android.viewmodel.AdminViewModel
 
 @Composable
 fun TelaAdmin(adminVm: AdminViewModel, isAdmin: Boolean) {
