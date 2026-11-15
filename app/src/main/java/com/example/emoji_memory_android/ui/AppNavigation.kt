@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.emojimemory.viewmodel.AdminViewModel
-import com.example.emojimemory.viewmodel.JogoViewModel
+import com.example.emoji_memory_android.viewmodel.AdminViewModel
+import com.example.emoji_memory_android.viewmodel.JogoViewModel
 
 @Composable
 fun AppNavigation(

@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.emojimemory.viewmodel.AdminViewModel
-import com.example.emojimemory.viewmodel.JogoViewModel
-import com.example.emojimemory.viewmodel.ViewModelFactory
+import com.example.emoji_memory_android.viewmodel.AdminViewModel
+import com.example.emoji_memory_android.viewmodel.JogoViewModel
+import com.example.emoji_memory_android.viewmodel.ViewModelFactory
 
 @Composable
 fun TelaPrincipal(factory: ViewModelFactory) {

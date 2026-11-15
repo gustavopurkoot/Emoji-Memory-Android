@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.emojimemory.viewmodel.JogoViewModel
+import com.example.emoji_memory_android.viewmodel.JogoViewModel
 
 @Composable
 fun TelaCriarConta(navController: NavController, jogoVm: JogoViewModel) {
