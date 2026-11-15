@@ -67,6 +67,15 @@ class UsuarioRepository(private val dao: UsuarioDAO) {
         }
     }
 
+    suspend fun deletar(usuario: Usuario): String? {
+        return try {
+            dao.deletar(usuario)
+            null
+        } catch (e: Exception) {
+            "Não foi possível excluir o usuário."
+        }
+    }
+
     suspend fun garantirAdmin(): String? {
         return try {
             if (dao.buscarPorNome("admin") == null) {
@@ -80,4 +89,3 @@ class UsuarioRepository(private val dao: UsuarioDAO) {
         }
     }
 }
-
