@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.emojimemory"
+    namespace = "com.example.emoji_memory_android"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.emojimemory"
+        applicationId = "com.example.emoji_memory_android"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
