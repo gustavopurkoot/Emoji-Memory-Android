@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -90,7 +91,7 @@ fun TelaAdmin(adminVm: AdminViewModel, isAdmin: Boolean) {
             items(estado.partidas, key = { "partida_${it.id}" }) { partida ->
                 Cartao {
                     LinhaInfo(
-                        "${partida.jogador} • ${partida.categoria}",
+                        "${partida.jogador} - ${partida.categoria}",
                         "${partida.pontuacao} pts"
                     )
                     Text(
@@ -136,6 +137,15 @@ fun TelaAdmin(adminVm: AdminViewModel, isAdmin: Boolean) {
                                 contentDescription = "Editar ${usuario.nome}",
                                 tint = RoxoPrincipal
                             )
+                        }
+                        if (!usuario.admin) {
+                            IconButton(onClick = { adminVm.excluirUsuario(usuario) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Excluir ${usuario.nome}",
+                                    tint = VermelhoErro
+                                )
+                            }
                         }
                     }
                 }
