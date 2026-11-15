@@ -76,6 +76,13 @@ class AdminViewModel(
         }
     }
 
+    fun excluirUsuario(usuario: Usuario) {
+        viewModelScope.launch {
+            val erro = usuarioRepository.deletar(usuario)
+            _uiState.update { it.copy(mensagem = erro ?: "Usuário excluído!") }
+        }
+    }
+
     fun limparMensagem() {
         _uiState.update { it.copy(mensagem = null) }
     }
