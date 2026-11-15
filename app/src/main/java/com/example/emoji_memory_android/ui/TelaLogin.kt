@@ -110,12 +110,5 @@ fun TelaLogin(navController: NavController, jogoVm: JogoViewModel) {
         ) {
             Text("Criar Conta", fontWeight = FontWeight.Bold, color = RoxoPrincipal)
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Administrador padrão: usuário admin, senha admin.",
-            fontSize = 12.sp,
-            color = TextoCinza
-        )
     }
 }
