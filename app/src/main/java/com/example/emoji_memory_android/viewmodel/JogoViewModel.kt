@@ -1,13 +1,13 @@
-package com.example.emoji-memory-android.viewmodel
+package com.example.emoji_memory_android.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.emoji-memory-android.data.local.Categoria
-import com.example.emoji-memory-android.data.local.Partida
-import com.example.emoji-memory-android.data.local.Usuario
-import com.example.emoji-memory-android.data.repository.CategoriaRepository
-import com.example.emoji-memory-android.data.repository.PartidaRepository
-import com.example.emoji-memory-android.data.repository.UsuarioRepository
+import com.example.emoji_memory_android.data.local.Categoria
+import com.example.emoji_memory_android.data.local.Partida
+import com.example.emoji_memory_android.data.local.Usuario
+import com.example.emoji_memory_android.data.repository.CategoriaRepository
+import com.example.emoji_memory_android.data.repository.PartidaRepository
+import com.example.emoji_memory_android.data.repository.UsuarioRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
