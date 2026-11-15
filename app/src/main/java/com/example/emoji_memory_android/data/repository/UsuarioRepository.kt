@@ -9,7 +9,7 @@ data class ResultadoLogin(
     val erro: String? = null
 )
 
-class UsuarioRep5ository(private val dao: UsuarioDAO) {
+class UsuarioRepository(private val dao: UsuarioDAO) {
 
     fun buscarTodos(): Flow<List<Usuario>> = dao.buscarTodos()
 
