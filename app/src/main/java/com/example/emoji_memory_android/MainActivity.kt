@@ -4,44 +4,30 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.emoji_memory_android.ui.theme.EmojiMemoryAndroidTheme
+import com.example.emoji_memory_android.data.local.AppDatabase
+import com.example.emoji_memory_android.data.remote.EmojiApi
+import com.example.emoji_memory_android.data.repository.CategoriaRepository
+import com.example.emoji_memory_android.data.repository.PartidaRepository
+import com.example.emoji_memory_android.data.repository.UsuarioRepository
+import com.example.emoji_memory_android.ui.EmojiMemoryTheme
+import com.example.emoji_memory_android.ui.TelaPrincipal
+import com.example.emoji_memory_android.viewmodel.ViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val db = AppDatabase.getDatabase(this)
+        val partidaRepo = PartidaRepository(db.partidaDAO())
+        val categoriaRepo = CategoriaRepository(db.categoriaDAO(), EmojiApi.service)
+        val usuarioRepo = UsuarioRepository(db.usuarioDAO())
+        val factory = ViewModelFactory(partidaRepo, categoriaRepo, usuarioRepo)
+
         setContent {
-            EmojiMemoryAndroidTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            EmojiMemoryTheme {
+                TelaPrincipal(factory)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    EmojiMemoryAndroidTheme {
-        Greeting("Android")
     }
 }
