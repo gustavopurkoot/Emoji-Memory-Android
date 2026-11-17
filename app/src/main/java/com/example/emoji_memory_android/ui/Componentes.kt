@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
-// Faixa roxa de título usada nas telas das abas
 @Composable
 fun CabecalhoRoxo(titulo: String) {
     Row(
@@ -50,7 +49,6 @@ fun CabecalhoRoxo(titulo: String) {
     }
 }
 
-// TopAppBar com botão de voltar funcional (popBackStack)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BarraTopo(titulo: String, navController: NavController) {
@@ -61,7 +59,7 @@ fun BarraTopo(titulo: String, navController: NavController) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
             }
         },
-        // o Scaffold da TelaPrincipal já reserva o espaço da barra de status
+
         windowInsets = WindowInsets(0, 0, 0, 0),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = RoxoPrincipal,
@@ -89,7 +87,6 @@ fun BotaoRoxo(
     }
 }
 
-// Linha "rótulo ........ valor" usada no perfil
 @Composable
 fun LinhaInfo(rotulo: String, valor: String) {
     Row(
@@ -103,7 +100,6 @@ fun LinhaInfo(rotulo: String, valor: String) {
     }
 }
 
-// Caixa branca arredondada que agrupa conteúdo
 @Composable
 fun Cartao(modifier: Modifier = Modifier, conteudo: @Composable ColumnScope.() -> Unit) {
     Column(
