@@ -36,6 +36,10 @@ O jogador cria uma conta, joga partidas de 16 cartas (4x4) com uma categoria de 
 
 A barra de navegação inferior mostra **Início** e **Perfil** para todos, e **Admin** apenas para o administrador.
 
+## 🎥 Vídeo de Demonstração
+
+- [Imagens e video de demonstração](https://drive.google.com/drive/folders/1AZJfguoo7rLCCd-OAhsJxbR1H7QPGutn?usp=sharing)
+
 ## 🛠️ Tecnologias
 
 - Kotlin 2.2.10
